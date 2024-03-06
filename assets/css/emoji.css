@@ -1,0 +1,52 @@
+c-wiz[data-creator-id]
+  div[jsname][jscontroller][jsaction]
+  > img[data-emoji-uuid] {
+  width: 64px !important;
+  height: 64px !important;
+  max-height: 64px !important;
+  border-radius: 8px !important;
+}
+
+[aria-label$="to view people who reacted."] {
+  height: 64px !important;
+  max-height: 64px !important;
+  width: 80px !important;
+  max-width: 80px !important;
+}
+
+[aria-label$="to view people who reacted."] img[data-emoji-uuid] {
+  width: 48px !important;
+  max-height: 48px !important;
+  height: 48px !important;
+  border-radius: 6px !important;
+}
+
+[aria-label$="to view people who reacted."] img[data-emoji] {
+  margin-top: 16px !important;
+}
+
+[aria-label$="to view people who reacted."] > div > span:last-child {
+  line-height: 48px !important;
+}
+
+#hbtEmojiTooltip {
+  position: fixed;
+  overflow: hidden;
+  z-index: 10;
+  width: 160px;
+  height: 160px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#hbtEmojiTooltipContainer {
+  padding: 8px;
+}
+
+#hbtEmojiTooltipContainer img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 8px;
+  object-fit: contain;
+}
