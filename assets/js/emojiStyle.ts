@@ -25,13 +25,21 @@ const createTooltip = (): [HTMLElement, HTMLElement] => {
 (() => {
   const [tooltip, container] = createTooltip();
 
+  document.addEventListener(
+    "mouseout",
+    () => {
+      tooltip.style.display = "none";
+    },
+    true
+  );
+
   const observer = new MutationObserver((items: MutationRecord[]) => {
     items.forEach((item) => {
       (item.addedNodes as NodeListOf<HTMLElement>).forEach((addedItem) => {
-        if (
-          addedItem.nodeType === 1 &&
-          addedItem.getAttribute("role") === "presentation"
-        ) {
+        const role =
+          addedItem.nodeType === 1 ? addedItem.getAttribute("role") : null;
+
+        if (role && ["none", "presentation"].includes(role)) {
           const icons: NodeListOf<HTMLElement> = addedItem.querySelectorAll(
             '[data-resource-url*="get_custom_emoji_image"], [data-resource-url*="chat_custom_emoji"]'
           );
@@ -56,24 +64,16 @@ const createTooltip = (): [HTMLElement, HTMLElement] => {
                   container.replaceChildren(img);
                 }
               },
-              {
-                capture: true,
-              }
+              true
             );
 
-            icon.addEventListener("mouseleave", () => {
-              tooltip.style.display = "none";
-            },
-            {
-              capture: true,
-            });
-          });
-
-          addedItem.addEventListener("mouseleave", () => {
-            tooltip.style.display = "none";
-          },
-          {
-            capture: true,
+            icon.addEventListener(
+              "mouseleave",
+              () => {
+                tooltip.style.display = "none";
+              },
+              true
+            );
           });
         }
       });
