@@ -1,8 +1,16 @@
+/*
+ * File: emojiStyle.ts
+ * Created Date: 5th Mar 2024 16:00:40
+ * Author: HanhBT <buihanh2304@gmail.com>
+ * -----
+ * Copyright (c) 2024 HanhBT
+ * -----
+ */
 import "../css/emoji.css";
 
 const createTooltip = (): [HTMLElement, HTMLElement] => {
-  const tooltipId = "hbtEmojiTooltip";
-  const tooltipContainerId = "hbtEmojiTooltipContainer";
+  const tooltipId = "hbtTooltip";
+  const tooltipContainerId = "hbtTooltipContainer";
   let tooltip = document.getElementById(tooltipId);
   let container = document.getElementById(tooltipContainerId);
 
@@ -35,9 +43,25 @@ const createTooltip = (): [HTMLElement, HTMLElement] => {
 
   const observer = new MutationObserver((items: MutationRecord[]) => {
     items.forEach((item) => {
+      if (item.type === "attributes" && item.attributeName === "style") {
+        const target = item.target as HTMLElement;
+
+        if (
+          target.nodeType === Node.ELEMENT_NODE &&
+          target.tagName.toLowerCase() === "c-wiz" &&
+          target.hasAttribute("c-wiz") &&
+          target.style.height &&
+          parseInt(target.style.height) === 0
+        ) {
+          setTimeout(() => {
+            tooltip.style.display = "none";
+          }, 0);
+        }
+      }
+
       (item.addedNodes as NodeListOf<HTMLElement>).forEach((addedItem) => {
-        const role =
-          addedItem.nodeType === 1 ? addedItem.getAttribute("role") : null;
+        const isElement = addedItem.nodeType === Node.ELEMENT_NODE;
+        const role = isElement ? addedItem.getAttribute("role") : null;
 
         if (role && ["none", "presentation"].includes(role)) {
           const icons: NodeListOf<HTMLElement> = addedItem.querySelectorAll(
@@ -83,5 +107,6 @@ const createTooltip = (): [HTMLElement, HTMLElement] => {
   observer.observe(document.documentElement, {
     subtree: true,
     childList: true,
+    attributes: true,
   });
 })();

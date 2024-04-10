@@ -1,3 +1,11 @@
+/*
+ * File: emoji.css
+ * Created Date: 5th Mar 2024 15:55:26
+ * Author: HanhBT <buihanh2304@gmail.com>
+ * -----
+ * Copyright (c) 2024 HanhBT
+ * -----
+ */
 c-wiz[data-creator-id]
   div[jsname][jscontroller][jsaction]
   > img[data-emoji-uuid] {
@@ -29,7 +37,7 @@ c-wiz[data-creator-id]
   line-height: 48px !important;
 }
 
-#hbtEmojiTooltip {
+#hbtTooltip {
   position: fixed;
   overflow: hidden;
   z-index: 10;
@@ -39,11 +47,11 @@ c-wiz[data-creator-id]
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-#hbtEmojiTooltipContainer {
+#hbtTooltipContainer {
   padding: 8px;
 }
 
-#hbtEmojiTooltipContainer img {
+#hbtTooltipContainer img {
   width: 100%;
   height: 100%;
   display: block;
