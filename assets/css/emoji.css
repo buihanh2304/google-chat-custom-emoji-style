@@ -58,3 +58,9 @@ c-wiz[data-creator-id]
   border-radius: 8px;
   object-fit: contain;
 }
+
+#hbtTooltip.full-screen {
+  z-index: 2000000001;
+  width: 480px;
+  height: 480px;
+}

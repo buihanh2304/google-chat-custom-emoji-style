@@ -1,10 +1,11 @@
 {
   "name": "Google Chat Custom Emoji Style",
   "manifest_version": 3,
-  "version": "0.0.3",
+  "version": "0.1.0",
   "content_scripts": [
     {
       "matches": [
+        "*://contacts.google.com/*",
         "*://chat.google.com/*",
         "*://mail.google.com/*"
       ],
