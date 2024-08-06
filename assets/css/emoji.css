@@ -64,3 +64,95 @@ c-wiz[data-creator-id]
   width: 480px;
   height: 480px;
 }
+
+.circle {
+  border: 0;
+  position: relative;
+  border-radius: 100%;
+  box-shadow: none;
+}
+
+.circle::before,
+.circle::after {
+  border-radius: 100%;
+  box-sizing: inherit;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60px;
+  height: 60px;
+}
+
+.circle::before {
+  border: 2px solid transparent;
+}
+
+.circle:hover::before {
+  animation-name: border;
+  animation-timing-function: linear;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+.circle::after {
+  border: 2px solid transparent;
+}
+
+.circle:hover::after {
+  border-top-color: #b3261e;
+  transform: rotate(270deg);
+  transition: transform 0.5s linear 0s, -webkit-transform 0.5s linear 0s;
+}
+
+@keyframes border {
+  0% {
+    border-top-color: #b3261e;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+  }
+  0.01% {
+    border-top-color: #b3261e;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+  }
+
+  33.32% {
+    border-top-color: #b3261e;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+  }
+  33.33% {
+    border-top-color: #b3261e;
+    border-right-color: #b3261e;
+    border-bottom-color: transparent;
+  }
+
+  33.34% {
+    border-top-color: #b3261e;
+    border-right-color: #b3261e;
+    border-bottom-color: transparent;
+  }
+
+  66.65% {
+    border-top-color: #b3261e;
+    border-right-color: #b3261e;
+    border-bottom-color: transparent;
+  }
+  66.66% {
+    border-top-color: #b3261e;
+    border-right-color: #b3261e;
+    border-bottom-color: #b3261e;
+  }
+  66.67% {
+    border-top-color: #b3261e;
+    border-right-color: #b3261e;
+    border-bottom-color: #b3261e;
+  }
+
+  100% {
+    border-top-color: #b3261e;
+    border-right-color: #b3261e;
+    border-bottom-color: #b3261e;
+  }
+}

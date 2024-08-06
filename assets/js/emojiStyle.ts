@@ -168,23 +168,37 @@ const createTooltip = (): [HTMLElement, HTMLElement] => {
           );
 
           if (avatar) {
-            avatar.addEventListener(
-              "mouseenter",
+            let timeout: number | undefined;
+
+            avatar.parentElement?.classList.add('circle');
+
+            avatar.parentElement?.addEventListener(
+              "mouseover",
               () => {
                 const src = avatar.getAttribute("src");
 
                 if (src) {
-                  window.parent.postMessage(
-                    eventDataPrefix +
-                      JSON.stringify({
-                        type: MessageType.ShowProfilePhoto,
-                        data: {
-                          src: src.replace(/=s(\d+)(-[a-z]+)+$/, "=s480$2"),
-                        },
-                      }),
-                    "*"
-                  );
+                  timeout = setTimeout(() => {
+                    window.parent.postMessage(
+                      eventDataPrefix +
+                        JSON.stringify({
+                          type: MessageType.ShowProfilePhoto,
+                          data: {
+                            src: src.replace(/=s(\d+)(-[a-z]+)+$/, "=s480$2"),
+                          },
+                        }),
+                      "*"
+                    );
+                  }, 500);
                 }
+              },
+              true
+            );
+
+            avatar.parentElement?.addEventListener(
+              "mouseleave",
+              () => {
+                clearTimeout(timeout);
               },
               true
             );
