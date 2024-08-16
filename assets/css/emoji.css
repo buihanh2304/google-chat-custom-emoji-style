@@ -70,6 +70,7 @@ c-wiz[data-creator-id]
   position: relative;
   border-radius: 100%;
   box-shadow: none;
+  display: block;
 }
 
 .circle::before,

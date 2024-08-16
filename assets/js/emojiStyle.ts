@@ -62,19 +62,21 @@ const createTooltip = (): [HTMLElement, HTMLElement] => {
           const iframe = document.querySelector(
             'iframe[src*="//contacts.google.com/widget/"]'
           );
-          const parent = iframe?.parentElement;
 
-          if (parent) {
-            const { x, y, height } = parent.getBoundingClientRect();
-
-            const top = y > 240 ? y - 240 : y + height - 240;
-
-            tooltip.style.left = `${x}px`;
-            tooltip.style.top = `${top}px`;
-          } else {
-            tooltip.style.left = `calc(50vw - 240px)`;
-            tooltip.style.top = `calc(50vh - 240px)`;
+          if (!iframe) {
+            return;
           }
+
+          const clientWidth = document.documentElement.clientWidth;
+          const clientHeight = document.documentElement.clientHeight;
+
+          const { x, y } = iframe.getBoundingClientRect();
+
+          const left = x > 200 && x + 280 < clientWidth ? x - 200 : x + 280 > clientWidth ? clientWidth - 500 : 20;
+          const top = y > 200 && y + 280 < clientHeight ? y - 200 : y + 280 > clientHeight ? clientHeight - 500 : 20;
+
+          tooltip.style.left = `${left}px`;
+          tooltip.style.top = `${top}px`;
 
           const img = document.createElement("img");
           img.src = data.data.src;
@@ -181,12 +183,12 @@ const createTooltip = (): [HTMLElement, HTMLElement] => {
                   timeout = setTimeout(() => {
                     window.parent.postMessage(
                       eventDataPrefix +
-                        JSON.stringify({
-                          type: MessageType.ShowProfilePhoto,
-                          data: {
-                            src: src.replace(/=s(\d+)(-[a-z]+)+$/, "=s480$2"),
-                          },
-                        }),
+                      JSON.stringify({
+                        type: MessageType.ShowProfilePhoto,
+                        data: {
+                          src: src.replace(/=s(\d+)(-[a-z]+)+$/, "=s480$2"),
+                        },
+                      }),
                       "*"
                     );
                   }, 500);
