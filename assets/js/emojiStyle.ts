@@ -60,7 +60,7 @@ const createTooltip = (): [HTMLElement, HTMLElement] => {
       switch (data.type) {
         case MessageType.ShowProfilePhoto:
           const iframe = document.querySelector(
-            'iframe[src*="//contacts.google.com/widget/"]'
+            'iframe[src*="//contacts.google.com/widget/"], iframe[src*="//contacts.google.com/u/"]'
           );
 
           if (!iframe) {
