@@ -72,8 +72,8 @@ const createTooltip = (): [HTMLElement, HTMLElement] => {
 
           const { x, y } = iframe.getBoundingClientRect();
 
-          const left = x > 200 && x + 280 < clientWidth ? x - 200 : x + 280 > clientWidth ? clientWidth - 500 : 20;
-          const top = y > 200 && y + 280 < clientHeight ? y - 200 : y + 280 > clientHeight ? clientHeight - 500 : 20;
+          const left = x > 200 && x + 280 < clientWidth ? x - 200 : x + 280 >= clientWidth ? clientWidth - 500 : 20;
+          const top = y > 200 && y + 280 < clientHeight ? y - 200 : y + 280 >= clientHeight ? clientHeight - 500 : 20;
 
           tooltip.style.left = `${left}px`;
           tooltip.style.top = `${top}px`;
