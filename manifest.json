@@ -1,7 +1,7 @@
 {
   "name": "Google Chat Custom Emoji Style",
   "manifest_version": 3,
-  "version": "0.1.1",
+  "version": "0.2.0",
   "content_scripts": [
     {
       "matches": [
