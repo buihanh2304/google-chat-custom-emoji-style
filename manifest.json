@@ -6,6 +6,7 @@
     {
       "matches": [
         "*://contacts.google.com/*",
+        "*://docs.google.com/*",
         "*://chat.google.com/*",
         "*://mail.google.com/*"
       ],
