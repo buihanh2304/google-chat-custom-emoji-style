@@ -1,7 +1,11 @@
 {
+  "$schema": "https://json.schemastore.org/chrome-manifest",
   "name": "Google Chat Custom Emoji Style",
   "manifest_version": 3,
-  "version": "0.2.0",
+  "version": "0.3.0",
+  "permissions": [
+    "storage"
+  ],
   "content_scripts": [
     {
       "matches": [
