@@ -37,6 +37,53 @@ c-wiz[data-creator-id]
   line-height: 48px !important;
 }
 
+.working-time {
+  cursor: pointer;
+  background-color: #eaf1fb;
+  border-radius: 24px;
+  border: none;
+  margin-bottom: 0;
+  padding: 16px 8px;
+  margin-right: 16px;
+  font-weight: bold;
+}
+
+.working-time-modal {
+  position: fixed;
+  z-index: 999;
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid transparent;
+  box-shadow: 0 1px 1px 0 rgba(65,69,73,.3),0 1px 3px 1px rgba(65,69,73,.15);
+}
+
+.working-time-modal label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.working-time-modal input {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(65,69,73,.15);
+}
+.working-time-modal button {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  padding: 8px;
+  background-color: #eaf1fb;
+  cursor: pointer;
+  border-radius: 6px;
+  border: 1px solid rgba(65,69,73,.15);
+}
+
 #hbtTooltip {
   position: fixed;
   overflow: hidden;

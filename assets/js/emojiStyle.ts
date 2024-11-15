@@ -6,6 +6,9 @@
  * Copyright (c) 2024 HanhBT
  * -----
  */
+import dayjs, { Dayjs } from 'dayjs';
+import { computePosition, offset } from '@floating-ui/dom';
+
 import "../css/emoji.css";
 
 enum MessageType {
@@ -37,7 +40,116 @@ const createTooltip = (): [HTMLElement, HTMLElement] => {
   return [tooltip, container];
 };
 
-(() => {
+(async () => {
+  async function workTime () {
+    const formEl = document.querySelector('form[aria-label="Search mail"]');
+
+    if (formEl?.parentElement && formEl.parentElement.nextElementSibling) {
+      let time = await chrome.storage.local.get('start_working_time');
+      let workingTime: Dayjs = time.start_working_time
+        ? dayjs(time.start_working_time) :
+        dayjs();
+
+      const isCurrentDate = workingTime.isSame(dayjs(), 'day');
+
+      if (!time.start_working_time || !isCurrentDate) {
+        if (!isCurrentDate) {
+          workingTime = dayjs();
+        }
+
+        await chrome.storage.local.set({ start_working_time: workingTime.toISOString() });
+      }
+
+      const timeEl = document.createElement("div");
+      timeEl.classList.add('working-time');
+
+      const input = document.createElement("input");
+      input.type = "time";
+      input.value = workingTime.format('HH:mm:00');
+
+      const setNowBtn = document.createElement('button');
+      setNowBtn.type = 'button';
+      setNowBtn.innerText = 'Use current time';
+      const changeEvent = new Event('change');
+      setNowBtn.addEventListener('click', () => {
+        input.value = dayjs().format('HH:mm:00');
+        input.dispatchEvent(changeEvent);
+      });
+
+      input.addEventListener('change', async (e) => {
+        const target = e.target as HTMLInputElement;
+        workingTime = workingTime.set('hour', parseInt(target.value.split(':')[0]))
+          .set('minute', parseInt(target.value.split(':')[1]));
+        await chrome.storage.local.set({ start_working_time: workingTime.toISOString() });
+
+        timeEl.innerText = `Worked: ${calculateWorkTime(workingTime)}`;
+      });
+
+      const label = document.createElement("label");
+      label.innerText = "Set start working time";
+
+      const modalEl = document.createElement("div");
+      modalEl.classList.add('working-time-modal');
+      modalEl.hidden = true;
+
+      modalEl.appendChild(label);
+      modalEl.appendChild(input);
+      modalEl.appendChild(setNowBtn);
+
+      const updatePosition = () => {
+        computePosition(timeEl, modalEl, {
+          middleware: [offset(10)]
+        }).then(({ x, y }) => {
+          Object.assign(modalEl.style, {
+            left: `${x}px`,
+            top: `${y}px`,
+          });
+        });
+      };
+
+      timeEl.addEventListener("click", () => {
+        modalEl.hidden = !modalEl.hidden;
+        updatePosition();
+      }, true);
+
+      timeEl.innerText = `Worked: ${calculateWorkTime(workingTime)}`;
+
+      formEl.parentElement.nextElementSibling.prepend(timeEl);
+
+      document.documentElement.appendChild(modalEl);
+      document.documentElement.addEventListener('click', (e) => {
+        const target = e.target as Node | null;
+
+        if (modalEl.hidden === false && !timeEl.isSameNode(target) && !modalEl.contains(e.target as Node | null)) {
+          modalEl.hidden = true;
+        }
+      }, true);
+
+      setInterval(() => {
+        timeEl.innerText = `Worked: ${calculateWorkTime(workingTime)}`;
+      }, 5000);
+    }
+  }
+
+  const calculateWorkTime = (from: Dayjs) => {
+    let minutes = dayjs().diff(from, 'minutes');
+
+    if (minutes > 315) {
+      minutes -= 75;
+    } else if (minutes > 240) {
+      minutes = 240;
+    }
+
+    const hours = Math.floor(minutes / 60);
+    minutes = minutes - hours * 60;
+
+    return `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+  };
+
+  setTimeout(() => {
+    workTime();
+  }, 2000);
+
   const [tooltip, container] = createTooltip();
 
   document.addEventListener(

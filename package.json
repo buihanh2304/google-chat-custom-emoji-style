@@ -2,7 +2,7 @@
   "name": "google-chat-tools",
   "author": "Bui The Hanh",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "scripts": {
     "dev:ff": "vite dev -c vite.firefox.config.js",
@@ -12,7 +12,9 @@
   },
   "devDependencies": {
     "@crxjs/vite-plugin": "^2.0.0-beta.28",
-    "chrome-types": "^0.1.246",
+    "@floating-ui/dom": "^1.6.12",
+    "@types/chrome": "^0.0.281",
+    "dayjs": "^1.11.13",
     "vite": "^4.4.9"
   }
 }
