@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/chrome-manifest",
-  "name": "Google Chat Custom Emoji Style",
+  "name": "Google Chat Plus",
   "manifest_version": 3,
   "version": "0.3.0",
   "permissions": [
@@ -14,7 +14,7 @@
         "*://chat.google.com/*",
         "*://mail.google.com/*"
       ],
-      "js": ["assets/js/emojiStyle.ts"],
+      "js": ["assets/js/main.ts"],
       "all_frames": true
     }
   ]

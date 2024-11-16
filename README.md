@@ -1,4 +1,9 @@
-# Google Chat Custom Emoji Style
+# Google Chat Plus
+
+### Functions
+- Improve emoji display
+- Improve avatar view
+- Calculate work time of day
 
 ### Install dependencies
 ```
