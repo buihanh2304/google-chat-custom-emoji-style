@@ -1,5 +1,5 @@
 /*
- * File: emoji.css
+ * File: styles.css
  * Created Date: 5th Mar 2024 15:55:26
  * Author: HanhBT <buihanh2304@gmail.com>
  * -----
@@ -51,7 +51,8 @@ c-wiz[data-creator-id]
 .working-time-modal {
   position: fixed;
   z-index: 999;
-  background-color: #fff;
+  flex-direction: column;
+  gap: 8px;
   padding: 16px;
   border-radius: 8px;
   background: #fff;
@@ -59,9 +60,12 @@ c-wiz[data-creator-id]
   box-shadow: 0 1px 1px 0 rgba(65,69,73,.3),0 1px 3px 1px rgba(65,69,73,.15);
 }
 
+.working-time-modal:not([hidden]) {
+  display: flex;
+}
+
 .working-time-modal label {
   display: block;
-  margin-bottom: 8px;
 }
 
 .working-time-modal input {
@@ -69,17 +73,16 @@ c-wiz[data-creator-id]
   display: block;
   width: 100%;
   padding: 8px;
-  margin-bottom: 8px;
   border-radius: 6px;
   border: 1px solid rgba(65,69,73,.15);
 }
-.working-time-modal button {
+
+.working-time-modal select {
   box-sizing: border-box;
   display: block;
   width: 100%;
   padding: 8px;
-  background-color: #eaf1fb;
-  cursor: pointer;
+  background-color: #fff;
   border-radius: 6px;
   border: 1px solid rgba(65,69,73,.15);
 }
