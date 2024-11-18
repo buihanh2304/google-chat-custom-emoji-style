@@ -21,6 +21,11 @@ enum ShowType {
   CHECKOUT_TIME = "Checkout time",
 }
 
+enum WorkFor {
+  SIX = "6",
+  EIGHT = "8",
+}
+
 const eventDataPrefix = "hbt";
 const contactsHost = "contacts.google.com";
 
@@ -57,19 +62,25 @@ const createTooltip = (): [HTMLElement, HTMLElement] => {
         ShowType.CHECKOUT_TIME
       ];
 
-      let time = await chrome.storage.local.get(['start_working_time', 'display_mode']);
+      const workForOptions = [
+        WorkFor.EIGHT,
+        WorkFor.SIX,
+      ];
+
+      let time = await chrome.storage.local.get(['start_working_time', 'display_mode', 'work_for']);
       let workingTime: Dayjs = time.start_working_time
         ? dayjs(time.start_working_time) :
         dayjs();
-      workingTime = workingTime.startOf('minute')
+      workingTime = workingTime.startOf('minute');
 
       let mode = time.display_mode && options.includes(time.display_mode) ? time.display_mode : options[0];
+      let workFor = time.work_for && workForOptions.includes(time.work_for) ? time.work_for : workForOptions[0];
 
       const isCurrentDate = workingTime.isSame(dayjs(), 'day');
 
       if (!time.start_working_time || !isCurrentDate) {
         if (!isCurrentDate) {
-          workingTime = dayjs();
+          workingTime = dayjs().startOf('minute');
         }
 
         await chrome.storage.local.set({ start_working_time: workingTime.toISOString() });
@@ -84,15 +95,49 @@ const createTooltip = (): [HTMLElement, HTMLElement] => {
 
       input.addEventListener('change', async (e) => {
         const target = e.target as HTMLInputElement;
-        workingTime = workingTime.set('hour', parseInt(target.value.split(':')[0]))
-          .set('minute', parseInt(target.value.split(':')[1]));
+
+        if (target.value === '') {
+          return;
+        }
+
+        let [hours, minutes] = target.value.split(':').map((v) => parseInt(v));
+
+        workingTime = workingTime.set('hour', hours)
+          .set('minute', minutes);
         await chrome.storage.local.set({ start_working_time: workingTime.toISOString() });
 
-        timeEl.innerText = calculateWorkTime(workingTime, mode);
+        timeEl.innerText = calculateWorkTime(workingTime, mode, workFor);
       });
 
       const label = document.createElement("label");
-      label.innerText = "Check-in time";
+      label.innerText = "Check-in";
+
+      const workForSelect = document.createElement("select");
+
+      workForOptions.forEach((option) => {
+        const optionEl = document.createElement("option");
+        optionEl.value = option;
+        optionEl.innerText = option + ' hours';
+        if (option === workFor) {
+          optionEl.selected = true;
+        }
+        workForSelect.appendChild(optionEl);
+      });
+
+      workForSelect.addEventListener('change', async (e) => {
+        const target = e.target as HTMLSelectElement;
+        let value = target.value as WorkFor;
+        value = workForOptions.includes(value) ? value : workForOptions[0];
+        workFor = value;
+        await chrome.storage.local.set({ work_for: workFor });
+
+
+        timeEl.innerText = calculateWorkTime(workingTime, mode, workFor);
+      });
+
+      const workForLabel = document.createElement("label");
+      workForLabel.innerText = 'Work for';
+
       const modeSelect = document.createElement("select");
 
       options.forEach((option) => {
@@ -113,7 +158,7 @@ const createTooltip = (): [HTMLElement, HTMLElement] => {
         await chrome.storage.local.set({ display_mode: mode });
 
 
-        timeEl.innerText = calculateWorkTime(workingTime, mode);
+        timeEl.innerText = calculateWorkTime(workingTime, mode, workFor);
       });
 
       const modeLabel = document.createElement("label");
@@ -125,6 +170,8 @@ const createTooltip = (): [HTMLElement, HTMLElement] => {
 
       modalEl.appendChild(label);
       modalEl.appendChild(input);
+      modalEl.appendChild(workForLabel);
+      modalEl.appendChild(workForSelect);
       modalEl.appendChild(modeLabel);
       modalEl.appendChild(modeSelect);
 
@@ -144,11 +191,11 @@ const createTooltip = (): [HTMLElement, HTMLElement] => {
         updatePosition();
       }, true);
 
-      timeEl.innerText = calculateWorkTime(workingTime, mode);
+      timeEl.innerText = calculateWorkTime(workingTime, mode, workFor);
 
       formEl.parentElement.nextElementSibling.prepend(timeEl);
+      formEl.parentElement.nextElementSibling.append(modalEl);
 
-      document.documentElement.appendChild(modalEl);
       document.documentElement.addEventListener('click', (e) => {
         const target = e.target as Node | null;
 
@@ -166,16 +213,20 @@ const createTooltip = (): [HTMLElement, HTMLElement] => {
       });
 
       setInterval(() => {
-        timeEl.innerText = calculateWorkTime(workingTime, mode);
+        timeEl.innerText = calculateWorkTime(workingTime, mode, workFor);
       }, 5000);
     }
   }
 
-  const calculateWorkTime = (from: Dayjs, mode: string) => {
+  const calculateWorkTime = (from: Dayjs, mode: string, workFor: WorkFor = WorkFor.EIGHT) => {
     if (mode === ShowType.CHECKOUT_TIME) {
-      const checkoutAt = from.add(8, 'hours').add(75, 'minute');
+      const checkoutAt = from.add(parseInt(workFor), 'hours').add(75, 'minute');
 
       return `Checkout at ${checkoutAt.format('HH:mm')}`;
+    }
+
+    if (dayjs().isBefore(from)) {
+      return '00:00';
     }
 
     let minutes = dayjs().diff(from, 'minutes');
@@ -189,7 +240,7 @@ const createTooltip = (): [HTMLElement, HTMLElement] => {
     }
 
     if (mode === ShowType.TIME_LEFT) {
-      minutes = Math.max(0, 8 * 60 + 75 - minutes);
+      minutes = Math.max(0, parseInt(workFor) * 60 + 75 - minutes);
     }
 
     const hours = Math.floor(minutes / 60);

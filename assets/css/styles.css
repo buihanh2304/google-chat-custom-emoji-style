@@ -39,7 +39,8 @@ c-wiz[data-creator-id]
 
 .working-time {
   cursor: pointer;
-  background-color: #eaf1fb;
+  background-color: var(--gm3-sys-color-surface-dim, #eaf1fb);
+  color: var(--gm3-sys-color-on-surface, #000);
   border-radius: 24px;
   border: none;
   margin-bottom: 0;
@@ -53,9 +54,12 @@ c-wiz[data-creator-id]
   z-index: 999;
   flex-direction: column;
   gap: 8px;
+  line-height: 1;
+  font-size: 16px;
   padding: 16px;
   border-radius: 8px;
-  background: #fff;
+  background: var(--gm3-sys-color-surface, #fff);
+  color: var(--gm3-sys-color-on-surface, #000);
   border: 1px solid transparent;
   box-shadow: 0 1px 1px 0 rgba(65,69,73,.3),0 1px 3px 1px rgba(65,69,73,.15);
 }
@@ -73,6 +77,8 @@ c-wiz[data-creator-id]
   display: block;
   width: 100%;
   padding: 8px;
+  background-color: var(--gm3-sys-color-background, #fff);
+  color: var(--gm3-sys-color-on-surface, #000);
   border-radius: 6px;
   border: 1px solid rgba(65,69,73,.15);
 }
@@ -82,7 +88,8 @@ c-wiz[data-creator-id]
   display: block;
   width: 100%;
   padding: 8px;
-  background-color: #fff;
+  background-color: var(--gm3-sys-color-background, #fff);
+  color: var(--gm3-sys-color-on-surface, #000);
   border-radius: 6px;
   border: 1px solid rgba(65,69,73,.15);
 }
