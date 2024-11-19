@@ -53,7 +53,7 @@ const createTooltip = (): [HTMLElement, HTMLElement] => {
 
 (async () => {
   async function workTime () {
-    const formEl = document.querySelector('form#aso_search_form_anchor');
+    const formEl = document.querySelector('form[role="search"]');
 
     if (formEl?.parentElement && formEl.parentElement.nextElementSibling) {
       const options = [
@@ -255,7 +255,7 @@ const createTooltip = (): [HTMLElement, HTMLElement] => {
 
   setTimeout(() => {
     workTime();
-  }, 5000);
+  }, 2000);
 
   const [tooltip, container] = createTooltip();
 
@@ -272,6 +272,7 @@ const createTooltip = (): [HTMLElement, HTMLElement] => {
   const handleMessage = (evt: MessageEvent<string>) => {
     if (
       evt.origin.slice(-contactsHost.length) === contactsHost &&
+      (typeof evt.data === "string") &&
       evt.data.startsWith(eventDataPrefix)
     ) {
       const data = JSON.parse(evt.data.slice(eventDataPrefix.length));
