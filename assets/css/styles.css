@@ -138,8 +138,8 @@ c-wiz[data-creator-id]
   position: absolute;
   top: 0;
   left: 0;
-  width: 60px;
-  height: 60px;
+  width: calc(var(--avatar-width, 64px) - 4px);
+  height: calc(var(--avatar-height, 64px) - 4px);
 }
 
 .circle::before {

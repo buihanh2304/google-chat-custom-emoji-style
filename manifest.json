@@ -3,6 +3,10 @@
   "name": "Google Chat Plus",
   "manifest_version": 3,
   "version": "0.3.0",
+  "host_permissions": [
+    "*://chat.google.com/*",
+    "*://mail.google.com/*"
+  ],
   "permissions": [
     "storage"
   ],

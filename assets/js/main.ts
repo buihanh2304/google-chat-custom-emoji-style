@@ -56,6 +56,10 @@ const createTooltip = (): [HTMLElement, HTMLElement] => {
     const formEl = document.querySelector('form[role="search"]');
 
     if (formEl?.parentElement && formEl.parentElement.nextElementSibling) {
+      if (window.location.hostname !== 'mail.google.com') {
+        return;
+      }
+
       const options = [
         ShowType.WORKED,
         ShowType.TIME_LEFT,
@@ -391,8 +395,11 @@ const createTooltip = (): [HTMLElement, HTMLElement] => {
 
           if (avatar) {
             let timeout: number | undefined;
+            const avatarStyle = getComputedStyle(avatar);
 
             avatar.parentElement?.classList.add('circle');
+            avatar.parentElement?.style.setProperty('--avatar-width', avatarStyle.width);
+            avatar.parentElement?.style.setProperty('--avatar-height', avatarStyle.height);
 
             avatar.parentElement?.addEventListener(
               "mouseover",
